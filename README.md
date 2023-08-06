@@ -53,10 +53,30 @@ Deploying Microstream and setting it up is a breeze. Follow these steps to get s
    cd microstream
 
 2. **Set Up Environment Variables**
-Rename .env.example to .env.local and fill in the necessary values. Here's a template
+Rename env-example.txt to .env.local and fill in the necessary values. Make sure you also add them to Vercel and Supabase. Here's a template
+
+```
+SUPABASE_URL=
+SUPABASE_KEY=
+TWITTER_CONSUMER_KEY=
+TWITTER_CONSUMER_SECRET=
+TWITTER_ACCESS_TOKEN_KEY=
+TWITTER_ACCESS_TOKEN_SECRET=
+MASTODON_API_URL=
+MASTODON_ACCESS_TOKEN=
+THREADS_USERNAME=
+THREADS_PASSWORD=
+TWITTER_OAUTH_CONSUMER_KEY=
+TWITTER_OAUTH_TOKEN=
+TWITTER_OAUTH_SIGNATURE_METHOD="HMAC-SHA1"
+TWITTER_OAUTH_TIMESTAMP=
+TWITTER_OAUTH_NONCE=
+TWITTER_OAUTH_VERSION=
+TWITTER_OAUTH_SIGNATURE=
+```
 
 3. **Deploy on Vercel**
-Ensure you have the Vercel CLI installed. If not, install it using npm i -g vercel. Then, run:
+Ensure you have the Vercel CLI installed. If not, install it using `npm i -g vercel`. Then, deploy it:
 `vercel`
 
 4. **Set Up Supabase**
@@ -66,9 +86,13 @@ Use the provided URL and ANON KEY in your .env.local file.
 
 5. **Run Locally** 
 `npm install`
+This will install various packages like @supabase/supabase-js, axios, feed, mastodon-api, next, twitter-lite, and others that are essential for the project to function correctly.
+Build it 
+`npm run build`
+Then run the app locally: 
 `npm run dev`
+
 
 ## Notes & Wish List 📝
 
-Add more integrations to extend the reach of Microstream.
-Optimize for performance and scalability.
+Make sure to change your RSS details in the /pages/api/rss.ts file to your RSS details
