@@ -64,8 +64,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Initialize OAuth for Twitter
 =======
+=======
+>>>>>>> parent of aac6bda (device fix)
     try {
       await threadsAPI.publish({ text: postContent });
       console.log('Successfully posted to Threads');
