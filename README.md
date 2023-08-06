@@ -1,10 +1,11 @@
-# Microstream 🚀
+![MicroStream Banner](http://bnji.org/public/microstream-banner.jpg)
+# MicroStream 🚀
 
 ## Intro & Features ✨
 
-Microstream is a versatile microblogging API for individuals who are tired of walled garden microblogging services like Twitter and Mastodon. At its core, Microstream seeks to break free from the constraints of such platforms, offering users more autonomy and control over their content.
+MicroStream is a versatile microblogging API for individuals who are tired of walled garden microblogging services like Twitter and Mastodon. At its core, Microstream seeks to break free from the constraints of such platforms, offering users more autonomy and control over their content.
 
-🌐 **Your Own Source of Truth**: With Microstream, your data is saved to Supabase DB, ensuring that you always have access to your original content, irrespective of third-party platforms.
+🌐 **Your Own Source of Truth**: With MicroStream, your data is saved to Supabase DB, ensuring that you always have access to your original content, irrespective of third-party platforms.
 
 * ✅ **Post to Twitter/X**: Now Elon doesn't control your destiny.
 * ✅ **Post to Mastodon**: Don't hold your breath for Threads to federate. 
