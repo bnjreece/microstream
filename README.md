@@ -9,23 +9,35 @@ Microstream is a versatile microblogging API for individuals who are tired of wa
 ✅ **Post to Twitter**: Seamlessly share your content on Twitter.
 ✅ **Post to Mastodon**: Extend your reach by posting to Mastodon.
 ✅ **Post to Threads**: Engage deeper by creating threaded content.
-✅ **RSS Support**: Make your content more accessible with RSS feeds.
-✅ **Frontend Input Template**: A simple frontend UI to post content.
+✅ **RSS Support**: Generates an RSS feed from your Microstream in Supabase. 
+✅ **Input via Twilio SMS**: Just sent your post to a Twilio phone number via SMS.
+✅ **Input via Frontend Template**: A simple frontend UI to post content powered by Next.JS for scalability.
+
+Deploys for free to Supabase and Next.JS
 
 
 ```
 +---------------------+         +--------+         +------------+
 | Frontend Input UI   | ------> |  API   | ------> |  Twitter   |
-+---------------------+         +--------+         +------------+
-                                    |               +------------+
-                                    +-------------->|  Mastodon  |
-                                    |               +------------+
-                                    |               +------------+
-                                    +-------------->|  Threads   |
-                                    |               +------------+
-                                    |               +------------+
-                                    +-------------->|  Supabase  |
-                                                    +------------+
+| (Vercel/Next.js)    |         +--------+         +------------+
+|           OR        |             |               +------------+
+| Input via Twilio    |             +-------------->|  Mastodon  |
+| Shortcut            |             |               +------------+
++---------------------+             |               +------------+
+                                   +-------------->|  Threads   |
+                                   |               +------------+
+                                   |               +------------+
+                                   +-------------->|  Supabase  |
+                                   |               +------+-----+
+                                   |                      |
+                                   |                      |
+                                   +----------------------+
+                                                          |
+                                                          v
+                                                        +----+
+                                                        | RSS |
+                                                        +----+
+
 ```
 
 ## Installation 🛠
