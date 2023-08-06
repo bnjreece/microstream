@@ -1,5 +1,5 @@
 ![MicroStream Banner](https://bnji.org/microstream-banner.jpg)
-# MicroStream, an API to enable multi-platfrom posting
+# MicroStream, a DB-backed multi-platform API
 
 ## Intro & Features ✨
 
