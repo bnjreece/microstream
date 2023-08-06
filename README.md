@@ -26,7 +26,7 @@ Microstream is a versatile microblogging API for individuals who are tired of wa
                                     |               +------------+
                                     +-------------->|  Supabase  |
                                                     +------------+
-
+```
 
 ## Installation 🛠
 
