@@ -48,26 +48,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
 
-    // Post to Threads
-    const threadsUsername = process.env.THREADS_USERNAME;
-    const threadsPassword = process.env.THREADS_PASSWORD;
+   // Post to Threads
+const threadsUsername = process.env.THREADS_USERNAME;
+const threadsPassword = process.env.THREADS_PASSWORD;
 
-    if (!threadsUsername || !threadsPassword) {
-      return res.status(500).json({ error: 'Threads environment variables are not set' });
-    }
+if (!threadsUsername || !threadsPassword) {
+  return res.status(500).json({ error: 'Threads environment variables are not set' });
+}
 
-    const threadsAPI = new ThreadsAPI({
-      username: threadsUsername, 
-      password: threadsPassword,
-    });
+const threadsAPI = new ThreadsAPI({
+  username: threadsUsername, 
+  password: threadsPassword,
+  device: {
+    manufacturer: 'Apple',
+    model: 'MacBookPro18,4',
+    os_version: 14.0,
+    os_release: 'macOS',
+  },
+});
 
-    try {
-      await threadsAPI.publish({ text: postContent });
-      console.log('Successfully posted to Threads');
-    } catch (threadsError) {
-      console.error('Error posting to Threads:', threadsError);
-      return res.status(500).json({ error: 'Error posting to Threads', details: threadsError });
-    }
+try {
+  await threadsAPI.publish({ text: postContent });
+  console.log('Successfully posted to Threads');
+} catch (threadsError) {
+  console.error('Error posting to Threads:', threadsError);
+  return res.status(500).json({ error: 'Error posting to Threads', details: threadsError });
+}
+
 
     // Post to Twitter
     const endpointURL = `https://api.twitter.com/2/tweets`;
