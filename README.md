@@ -13,7 +13,7 @@ Microstream is a versatile microblogging API for individuals who are tired of wa
 ✅ **Frontend Input Template**: A simple frontend UI to post content.
 
 
-\```
+```
 +---------------------+         +--------+         +------------+
 | Frontend Input UI   | ------> |  API   | ------> |  Twitter   |
 +---------------------+         +--------+         +------------+
@@ -26,7 +26,7 @@ Microstream is a versatile microblogging API for individuals who are tired of wa
                                     |               +------------+
                                     +-------------->|  Supabase  |
                                                     +------------+
-\```
+
 
 ## Installation 🛠
 
