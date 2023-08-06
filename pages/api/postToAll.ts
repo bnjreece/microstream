@@ -81,45 +81,41 @@ try {
 
 
 const oauth = OAuth({
-    consumer: {
-        key: process.env.TWITTER_CONSUMER_KEY,
-        secret: process.env.TWITTER_CONSUMER_SECRET
-    },
-    signature_method: 'HMAC-SHA1',
-    hash_function(base_string: string, key: string) {
+  consumer: {
+      key: process.env.TWITTER_CONSUMER_KEY,
+      secret: process.env.TWITTER_CONSUMER_SECRET
+  },
+  signature_method: 'HMAC-SHA1',
+  hash_function(base_string: string, key: string): string {
       return crypto
           .createHmac('sha1', key)
           .update(base_string)
-          .digest('base64')
+          .digest('base64');
   },
-  
 });
-
 const token = {
-    key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+  key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 };
 
 const request_data = {
-    url: 'https://api.twitter.com/2/tweets',
-    method: 'POST',
-    data: {
-        "text": postContent
-    }
+  url: 'https://api.twitter.com/2/tweets',
+  method: 'POST',
+  data: { "text": postContent }
 };
 
-const headers = oauth.toHeader(oauth.authorize(request_data, token));
-
-// Attach other headers
-headers['Content-Type'] = 'application/json';
-headers['User-Agent'] = 'v2CreateTweetJS';
+const headers = {
+...oauth.toHeader(oauth.authorize(request_data, token)),
+'User-Agent': 'v2CreateTweetJS',
+'Content-Type': 'application/json'
+};
 
 try {
-    const req = await got.post(request_data.url, {
-        json: request_data.data,
-        responseType: 'json',
-        headers: headers
-    });
+  const req = await got.post(request_data.url, {
+      json: request_data.data,
+      responseType: 'json',
+      headers: headers
+  });
 
     if (!req.body) {
         throw new Error('Unsuccessful request to Twitter');
