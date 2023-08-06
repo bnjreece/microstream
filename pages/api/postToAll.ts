@@ -50,34 +50,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
 
-   // Post to Threads
-const threadsUsername = process.env.THREADS_USERNAME;
-const threadsPassword = process.env.THREADS_PASSWORD;
+    // Post to Threads
+    const threadsUsername = process.env.THREADS_USERNAME;
+    const threadsPassword = process.env.THREADS_PASSWORD;
 
-if (!threadsUsername || !threadsPassword) {
-  return res.status(500).json({ error: 'Threads environment variables are not set' });
-}
+    if (!threadsUsername || !threadsPassword) {
+      return res.status(500).json({ error: 'Threads environment variables are not set' });
+    }
 
-const threadsAPI = new ThreadsAPI({
-  username: threadsUsername, 
-  password: threadsPassword,
-  device: {
-    manufacturer: 'Apple',
-    model: 'MacBookPro18,4',
-    os_version: 14.0,
-    os_release: 'macOS',
-  },
-});
+    const threadsAPI = new ThreadsAPI({
+      username: threadsUsername, 
+      password: threadsPassword,
+    });
 
-try {
-  await threadsAPI.publish({ text: postContent });
-  console.log('Successfully posted to Threads');
-} catch (threadsError) {
-  console.error('Error posting to Threads:', threadsError);
-  return res.status(500).json({ error: 'Error posting to Threads', details: threadsError });
-}
-
+<<<<<<< HEAD
 // Initialize OAuth for Twitter
+=======
+    try {
+      await threadsAPI.publish({ text: postContent });
+      console.log('Successfully posted to Threads');
+    } catch (threadsError) {
+      console.error('Error posting to Threads:', threadsError);
+      return res.status(500).json({ error: 'Error posting to Threads', details: threadsError });
+    }
+
+    // Post to Twitter
+    const endpointURL = `https://api.twitter.com/2/tweets`;
+    const data = {
+      "text": postContent
+    };
+    const oauthHeader = `OAuth oauth_consumer_key="${process.env.TWITTER_OAUTH_CONSUMER_KEY}",oauth_token="${process.env.TWITTER_OAUTH_TOKEN}",oauth_signature_method="${process.env.TWITTER_OAUTH_SIGNATURE_METHOD}",oauth_timestamp="${process.env.TWITTER_OAUTH_TIMESTAMP}",oauth_nonce="${process.env.TWITTER_OAUTH_NONCE}",oauth_version="${process.env.TWITTER_OAUTH_VERSION}",oauth_signature="${process.env.TWITTER_OAUTH_SIGNATURE}"`;
+>>>>>>> parent of aac6bda (device fix)
 
 
 const oauth = OAuth({
