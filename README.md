@@ -6,12 +6,12 @@ Microstream is a versatile microblogging API for individuals who are tired of wa
 
 🌐 **Your Own Source of Truth**: With Microstream, your data is saved to Supabase DB, ensuring that you always have access to your original content, irrespective of third-party platforms.
 
-✅ **Post to Twitter**: Seamlessly share your content on Twitter.
-✅ **Post to Mastodon**: Extend your reach by posting to Mastodon.
-✅ **Post to Threads**: Engage deeper by creating threaded content.
-✅ **RSS Support**: Generates an RSS feed from your Microstream in Supabase. 
-✅ **Input via Twilio SMS**: Just sent your post to a Twilio phone number via SMS.
-✅ **Input via Frontend Template**: A simple frontend UI to post content powered by Next.JS for scalability.
+* ✅ **Post to Twitter**: Seamlessly share your content on Twitter.
+* ✅ **Post to Mastodon**: Extend your reach by posting to Mastodon.
+* ✅ **Post to Threads**: Engage deeper by creating threaded content.
+* ✅ **RSS Support**: Generates an RSS feed from your Microstream in Supabase. 
+* ✅ **Input via Twilio SMS**: Just sent your post to a Twilio phone number via SMS.
+* ✅ **Input via Frontend Template**: A simple frontend UI to post content powered by Next.JS for scalability.
 
 Deploys for free to Supabase and Next.JS
 
