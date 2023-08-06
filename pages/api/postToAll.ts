@@ -3,6 +3,8 @@ import Mastodon from 'mastodon-api';
 import { createClient } from '@supabase/supabase-js';
 import got from 'got';
 import { ThreadsAPI } from 'threads-api';
+import OAuth from 'oauth-1.0a';
+import crypto from 'crypto';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -75,35 +77,58 @@ try {
   return res.status(500).json({ error: 'Error posting to Threads', details: threadsError });
 }
 
-
-    // Post to Twitter
-    const endpointURL = `https://api.twitter.com/2/tweets`;
-    const data = {
-      "text": postContent
-    };
-    const oauthHeader = `OAuth oauth_consumer_key="${process.env.TWITTER_OAUTH_CONSUMER_KEY}",oauth_token="${process.env.TWITTER_OAUTH_TOKEN}",oauth_signature_method="${process.env.TWITTER_OAUTH_SIGNATURE_METHOD}",oauth_timestamp="${process.env.TWITTER_OAUTH_TIMESTAMP}",oauth_nonce="${process.env.TWITTER_OAUTH_NONCE}",oauth_version="${process.env.TWITTER_OAUTH_VERSION}",oauth_signature="${process.env.TWITTER_OAUTH_SIGNATURE}"`;
+// Initialize OAuth for Twitter
 
 
-    try {
-      const req = await got.post(endpointURL, {
-        json: data,
-        responseType: 'json',
-        headers: {
-          Authorization: oauthHeader,
-          'user-agent': "v2CreateTweetJS",
-          'content-type': "application/json",
-          'accept': "application/json"
-        }
-      });
+const oauth = OAuth({
+    consumer: {
+        key: process.env.TWITTER_CONSUMER_KEY,
+        secret: process.env.TWITTER_CONSUMER_SECRET
+    },
+    signature_method: 'HMAC-SHA1',
+    hash_function(base_string: string, key: string) {
+      return crypto
+          .createHmac('sha1', key)
+          .update(base_string)
+          .digest('base64')
+  },
+  
+});
 
-      if (!req.body) {
-        throw new Error('Unsuccessful request to Twitter');
-      }
-      console.log('Twitter response:', req.body);
-    } catch (twitterError) {
-      console.error('Error posting to Twitter:', twitterError);
-      return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError });
+const token = {
+    key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+};
+
+const request_data = {
+    url: 'https://api.twitter.com/2/tweets',
+    method: 'POST',
+    data: {
+        "text": postContent
     }
+};
+
+const headers = oauth.toHeader(oauth.authorize(request_data, token));
+
+// Attach other headers
+headers['Content-Type'] = 'application/json';
+headers['User-Agent'] = 'v2CreateTweetJS';
+
+try {
+    const req = await got.post(request_data.url, {
+        json: request_data.data,
+        responseType: 'json',
+        headers: headers
+    });
+
+    if (!req.body) {
+        throw new Error('Unsuccessful request to Twitter');
+    }
+    console.log('Twitter response:', req.body);
+} catch (twitterError) {
+    console.error('Error posting to Twitter:', twitterError);
+    return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError });
+}
 
     res.status(200).json({ message: 'Posted to Mastodon, Twitter, and stored in DB successfully.' });
   } catch (err) {
