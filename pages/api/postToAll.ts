@@ -65,8 +65,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Initialize OAuth for Twitter
 =======
+=======
+>>>>>>> parent of aac6bda (device fix)
 =======
 >>>>>>> parent of aac6bda (device fix)
     try {
