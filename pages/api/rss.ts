@@ -27,11 +27,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Set up RSS feed
     const feed = new Feed({
-        title: 'Your Website Title',
-        description: 'Description of your website',
+        title: 'bnji-stream',
+        description: 'a stream-of-thought via microstream api',
         link: 'https://bnji.org/api/rss',
         id: 'https://bnji.org/',  // This should be your site's base URL
-        copyright: 'Copyright © 2023 Your Website Name'  // Replace with the current year and your website name
+        copyright: 'Copyright © 2023 bnjmn.org'  // Replace with the current year and your website name
       });
       
     // Add posts to the RSS feed
