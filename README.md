@@ -1,34 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Microstream 🚀
 
-## Getting Started
+## Intro & Features ✨
 
-First, run the development server:
+Microstream is a versatile microblogging API for individuals who are tired of walled garden microblogging services like Twitter and Mastodon. At its core, Microstream seeks to break free from the constraints of such platforms, offering users more autonomy and control over their content.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+🌐 **Your Own Source of Truth**: With Microstream, your data is saved to Supabase DB, ensuring that you always have access to your original content, irrespective of third-party platforms.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+✅ **Post to Twitter**: Seamlessly share your content on Twitter.
+✅ **Post to Mastodon**: Extend your reach by posting to Mastodon.
+✅ **Post to Threads**: Engage deeper by creating threaded content.
+✅ **RSS Support**: Make your content more accessible with RSS feeds.
+✅ **Frontend Input Template**: A simple frontend UI to post content.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+\```
++---------------------+         +--------+         +------------+
+| Frontend Input UI   | ------> |  API   | ------> |  Twitter   |
++---------------------+         +--------+         +------------+
+                                    |               +------------+
+                                    +-------------->|  Mastodon  |
+                                    |               +------------+
+                                    |               +------------+
+                                    +-------------->|  Threads   |
+                                    |               +------------+
+                                    |               +------------+
+                                    +-------------->|  Supabase  |
+                                                    +------------+
+\```
 
-## Learn More
+## Installation 🛠
 
-To learn more about Next.js, take a look at the following resources:
+Deploying Microstream and setting it up is a breeze. Follow these steps to get started:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/bnjreece/microstream.git
+   cd microstream
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. **Set Up Environment Variables**
+Rename .env.example to .env.local and fill in the necessary values. Here's a template
 
-## Deploy on Vercel
+3. **Deploy on Vercel**
+Ensure you have the Vercel CLI installed. If not, install it using npm i -g vercel. Then, run:
+`vercel`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Set Up Supabase**
+Visit Supabase and create a new project.
+Follow the instructions to set up the database and auth modules.
+Use the provided URL and ANON KEY in your .env.local file.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+5. **Run Locally** 
+`npm install`
+`npm run dev`
+
+## Notes & Wish List 📝
+
+Add more integrations to extend the reach of Microstream.
+Optimize for performance and scalability.
