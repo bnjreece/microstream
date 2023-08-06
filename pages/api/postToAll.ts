@@ -3,8 +3,6 @@ import Mastodon from 'mastodon-api';
 import { createClient } from '@supabase/supabase-js';
 import got from 'got';
 import { ThreadsAPI } from 'threads-api';
-import OAuth from 'oauth-1.0a';
-import crypto from 'crypto';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -16,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const supabaseKey = process.env.SUPABASE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      return res.status(500).json({ error: 'Supabase environment variables are not set' });
+      return res.status(500).json({ error: 'Supabase environment variables are not set 2' });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -50,35 +48,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
 
-    // Post to Threads
-    const threadsUsername = process.env.THREADS_USERNAME;
-    const threadsPassword = process.env.THREADS_PASSWORD;
+   // Post to Threads
+const threadsUsername = process.env.THREADS_USERNAME;
+const threadsPassword = process.env.THREADS_PASSWORD;
 
-    if (!threadsUsername || !threadsPassword) {
-      return res.status(500).json({ error: 'Threads environment variables are not set' });
-    }
+if (!threadsUsername || !threadsPassword) {
+  return res.status(500).json({ error: 'Threads environment variables are not set' });
+}
 
-    const threadsAPI = new ThreadsAPI({
-      username: threadsUsername, 
-      password: threadsPassword,
-    });
+const threadsAPI = new ThreadsAPI({
+  username: threadsUsername, 
+  password: threadsPassword,
+  device: {
+    manufacturer: 'Apple',
+    model: 'MacBookPro18,4',
+    os_version: 14.0,
+    os_release: 'macOS',
+  },
+});
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-// Initialize OAuth for Twitter
-=======
-=======
->>>>>>> parent of aac6bda (device fix)
-=======
->>>>>>> parent of aac6bda (device fix)
-    try {
-      await threadsAPI.publish({ text: postContent });
-      console.log('Successfully posted to Threads');
-    } catch (threadsError) {
-      console.error('Error posting to Threads:', threadsError);
-      return res.status(500).json({ error: 'Error posting to Threads', details: threadsError });
-    }
+try {
+  await threadsAPI.publish({ text: postContent });
+  console.log('Successfully posted to Threads');
+} catch (threadsError) {
+  console.error('Error posting to Threads:', threadsError);
+  return res.status(500).json({ error: 'Error posting to Threads', details: threadsError });
+}
+
 
     // Post to Twitter
     const endpointURL = `https://api.twitter.com/2/tweets`;
@@ -86,54 +82,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       "text": postContent
     };
     const oauthHeader = `OAuth oauth_consumer_key="${process.env.TWITTER_OAUTH_CONSUMER_KEY}",oauth_token="${process.env.TWITTER_OAUTH_TOKEN}",oauth_signature_method="${process.env.TWITTER_OAUTH_SIGNATURE_METHOD}",oauth_timestamp="${process.env.TWITTER_OAUTH_TIMESTAMP}",oauth_nonce="${process.env.TWITTER_OAUTH_NONCE}",oauth_version="${process.env.TWITTER_OAUTH_VERSION}",oauth_signature="${process.env.TWITTER_OAUTH_SIGNATURE}"`;
->>>>>>> parent of aac6bda (device fix)
 
 
-const oauth = OAuth({
-  consumer: {
-      key: process.env.TWITTER_CONSUMER_KEY,
-      secret: process.env.TWITTER_CONSUMER_SECRET
-  },
-  signature_method: 'HMAC-SHA1',
-  hash_function(base_string: string, key: string): string {
-      return crypto
-          .createHmac('sha1', key)
-          .update(base_string)
-          .digest('base64');
-  },
-});
-const token = {
-  key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-  secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-};
+    try {
+      const req = await got.post(endpointURL, {
+        json: data,
+        responseType: 'json',
+        headers: {
+          Authorization: oauthHeader,
+          'user-agent': "v2CreateTweetJS",
+          'content-type': "application/json",
+          'accept': "application/json"
+        }
+      });
 
-const request_data = {
-  url: 'https://api.twitter.com/2/tweets',
-  method: 'POST',
-  data: { "text": postContent }
-};
-
-const headers = {
-...oauth.toHeader(oauth.authorize(request_data, token)),
-'User-Agent': 'v2CreateTweetJS',
-'Content-Type': 'application/json'
-};
-
-try {
-  const req = await got.post(request_data.url, {
-      json: request_data.data,
-      responseType: 'json',
-      headers: headers
-  });
-
-    if (!req.body) {
+      if (!req.body) {
         throw new Error('Unsuccessful request to Twitter');
+      }
+      console.log('Twitter response:', req.body);
+    } catch (twitterError) {
+      console.error('Error posting to Twitter:', twitterError);
+      return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError });
     }
-    console.log('Twitter response:', req.body);
-} catch (twitterError) {
-    console.error('Error posting to Twitter:', twitterError);
-    return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError });
-}
 
     res.status(200).json({ message: 'Posted to Mastodon, Twitter, and stored in DB successfully.' });
   } catch (err) {
