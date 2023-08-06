@@ -1,4 +1,4 @@
-![MicroStream Banner](http://bnji.org/public/microstream-banner.jpg)
+![MicroStream Banner](https://bnji.org/microstream-banner.jpg)
 # MicroStream 🚀
 
 ## Intro & Features ✨
