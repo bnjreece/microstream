@@ -87,7 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     const consumer_secret = process.env.TWITTER_CONSUMER_SECRET;
-    const token_secret = process.env.TWITTER_TOKEN_SECRET;
+    const token_secret = process.env.TWITTER_ACCESS_TOKEN_SECRET;
 
     if (!consumer_secret || !token_secret) {
         throw new Error('Twitter secret environment variables are not set');
