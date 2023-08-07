@@ -80,9 +80,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 const oauth_consumer_key = process.env.TWITTER_OAUTH_CONSUMER_KEY;
 const oauth_token = process.env.TWITTER_OAUTH_TOKEN;
 const oauth_signature_method = process.env.TWITTER_OAUTH_SIGNATURE_METHOD;
-const oauth_timestamp = Math.round(Date.now() / 1000);
-const oauth_nonce = crypto.randomBytes(32).toString('base64');
+const oauth_timestamp = process.env.TWITTER_OAUTH_TIMESTAMP;
+const oauth_nonce = process.env.TWITTER_OAUTH_NONCE;
 const oauth_version = process.env.TWITTER_OAUTH_VERSION;
+
+// ... (rest of your code here)
+
 
 if (!oauth_consumer_key || !oauth_token || !oauth_signature_method || !oauth_version) {
   throw new Error('Twitter OAuth environment variables are not set');
