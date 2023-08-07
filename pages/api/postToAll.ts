@@ -99,11 +99,10 @@ try {
 
   // Define request data
   const requestData = {
-    url: 'https://api.twitter.com/2/tweets',
+    url: 'https://api.twitter.com/1.1/statuses/update.json',
     method: 'POST',
-    data: { text: postContent },
+    data: { status: postContent },
   };
-
   // Define the OAuth access token
   const token = {
     key: process.env.TWITTER_ACCESS_TOKEN,
@@ -113,13 +112,11 @@ try {
 // Post to Twitter
 try {
   const req = await got.post(requestData.url, {
-    json: requestData.data,
+    form: requestData.data,
     responseType: 'json',
     headers: {
       Authorization: oauth.toHeader(oauth.authorize(requestData, token))['Authorization'],
-      'user-agent': "v2CreateTweetJS",
-      'content-type': "application/json",
-      'accept': "application/json"
+      'Content-Type': "application/x-www-form-urlencoded",
     },
   });
 
@@ -133,6 +130,7 @@ try {
   console.error('Error posting to Twitter:', twitterError.response.body);
   return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError.response.body });
 }
+
 
   res.status(200).json({ message: 'Posted to Mastodon, Twitter, and stored in DB successfully.' });
 } catch (err) {
