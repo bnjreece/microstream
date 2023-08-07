@@ -10,7 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const postContent = req.body.Body ? req.body.Body : req.body.text;
 
-
     // Save to Supabase
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_KEY;
@@ -78,64 +77,62 @@ try {
 }
  */
 
-    // Define OAuth 1.0a object
-    const oauth = OAuth({
-      consumer: {
-        key: process.env.TWITTER_CONSUMER_KEY,
-        secret: process.env.TWITTER_CONSUMER_SECRET
-      },
-      signature_method: 'HMAC-SHA1',
-      hash_function(base_string, key) {
-        return crypto
-          .createHmac('sha1', key)
-          .update(base_string)
-          .digest('base64');
+  // Define OAuth 1.0a object
+  const oauth = OAuth({
+    consumer: {
+      key: process.env.TWITTER_CONSUMER_KEY,
+      secret: process.env.TWITTER_CONSUMER_SECRET
+    },
+    signature_method: 'HMAC-SHA1',
+    hash_function: (base_string: string, key: string) => crypto
+      .createHmac('sha1', key)
+      .update(base_string)
+      .digest('base64')
+  });
+
+  // Define request data
+  const requestData = {
+    url: 'https://api.twitter.com/2/tweets',
+    method: 'POST',
+    data: { status: postContent },
+  };
+
+  // Define the OAuth access token
+  const token = {
+    key: process.env.TWITTER_ACCESS_TOKEN,
+    secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+  };
+
+  // Post to Twitter
+  try {
+    const req = await got.post(requestData.url, {
+      json: requestData.data,
+      responseType: 'json',
+      headers: {
+        Authorization: oauth.toHeader(oauth.authorize(requestData, token))['Authorization'],
+        'user-agent': "v2CreateTweetJS",
+        'content-type': "application/json",
+        'accept': "application/json"
       },
     });
 
-    // Define request data
-    const requestData = {
-      url: 'https://api.twitter.com/2/tweets',
-      method: 'POST',
-      data: { status: postContent },
-    };
-
-    // Define the OAuth access token
-    const token = {
-      key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-      secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-    };
-
-    // Post to Twitter
-    try {
-      const req = await got.post(requestData.url, {
-        json: requestData.data,
-        responseType: 'json',
-        headers: {
-          Authorization: oauth.toHeader(oauth.authorize(requestData, token))['Authorization'],
-          'user-agent': "v2CreateTweetJS",
-          'content-type': "application/json",
-          'accept': "application/json"
-        },
-      });
-
-      if (!req.body) {
-        throw new Error('Unsuccessful request to Twitter');
-      }
-
-      console.log('Twitter response:', req.body);
-    } catch (twitterError) {
-      console.error('Error posting to Twitter:', twitterError);
-      return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError });
+    if (!req.body) {
+      throw new Error('Unsuccessful request to Twitter');
     }
 
-    res.status(200).json({ message: 'Posted to Mastodon, Twitter, and stored in DB successfully.' });
-  } catch (err) {
-    console.error('An error occurred:', err);
-    if (err instanceof Error) {
-      res.status(500).json({ error: `An error occurred while processing your request: ${err.message}`, stack: err.stack });
-    } else {
-      res.status(500).json({ error: `An error occurred while processing your request: ${String(err)}` });
-    }
+    console.log('Twitter response:', req.body);
+  } catch (twitterError) {
+    console.error('Error posting to Twitter:', twitterError);
+    return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError });
   }
+
+  res.status(200).json({ message: 'Posted to Mastodon, Twitter, and stored in DB successfully.' });
+} catch (err) {
+  console.error('An error occurred:', err);
+  if (err instanceof Error) {
+    res.status(500).json({ error: `An error occurred while processing your request: ${err.message}`, stack: err.stack });
+  } else {
+    res.status(500).json({ error: `An error occurred while processing your request: ${String(err)}` });
+  }
+}
 }
