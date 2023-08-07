@@ -6,6 +6,13 @@ import { ThreadsAPI } from 'threads-api';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
 
+// Define a custom error type
+interface GotError extends Error {
+  response: {
+    body: any;
+  };
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const postContent = req.body.Body ? req.body.Body : req.body.text;
@@ -103,28 +110,29 @@ try {
     secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
   };
 
-  // Post to Twitter
-  try {
-    const req = await got.post(requestData.url, {
-      json: requestData.data,
-      responseType: 'json',
-      headers: {
-        Authorization: oauth.toHeader(oauth.authorize(requestData, token))['Authorization'],
-        'user-agent': "v2CreateTweetJS",
-        'content-type': "application/json",
-        'accept': "application/json"
-      },
-    });
+// Post to Twitter
+try {
+  const req = await got.post(requestData.url, {
+    json: requestData.data,
+    responseType: 'json',
+    headers: {
+      Authorization: oauth.toHeader(oauth.authorize(requestData, token))['Authorization'],
+      'user-agent': "v2CreateTweetJS",
+      'content-type': "application/json",
+      'accept': "application/json"
+    },
+  });
 
-    if (!req.body) {
-      throw new Error('Unsuccessful request to Twitter');
-    }
-
-    console.log('Twitter response:', req.body);
-  } catch (twitterError) {
-    console.error('Error posting to Twitter:', twitterError);
-    return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError });
+  if (!req.body) {
+    throw new Error('Unsuccessful request to Twitter');
   }
+
+  console.log('Twitter response:', req.body);
+} catch (error) {
+  const twitterError = error as GotError;
+  console.error('Error posting to Twitter:', twitterError.response.body);
+  return res.status(500).json({ error: 'Error posting to Twitter', details: twitterError.response.body });
+}
 
   res.status(200).json({ message: 'Posted to Mastodon, Twitter, and stored in DB successfully.' });
 } catch (err) {
