@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const supabaseKey = process.env.SUPABASE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      return res.status(500).json({ error: 'Supabase environment variables are not set' });
+      return res.status(500).json({ error: 'Supabase environment variables are not set 2' });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
