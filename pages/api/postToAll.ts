@@ -56,15 +56,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
    }
 
    const threadsAPI = new ThreadsAPI({
-     username: threadsUsername,
-     password: threadsPassword,
-     device: {
-       manufacturer: 'Apple',
-       model: 'MacBookPro18,4',
-       os_version: 14.0,
-       os_release: 'macOS',
-     },
-   });
+    username: threadsUsername,
+    password: threadsPassword,
+    device: {
+      manufacturer: 'Apple',
+      model: 'iPhone13,1',
+      os_version: 17.0,
+      os_release: '21A5291j',
+    },
+  });
+  
+  
 
    try {
      await threadsAPI.publish({ text: postContent });
