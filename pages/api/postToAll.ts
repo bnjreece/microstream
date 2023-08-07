@@ -97,13 +97,14 @@ try {
         .digest('base64')
     });
   
-    // Define request data
-    const requestData = {
-      url: `https://api.twitter.com/2/users/${process.env.TWITTER_USER_ID}/tweets`,
-      method: 'POST',
-      data: { text: postContent },
-    };
-  
+   // Define request data
+   const requestData = {
+    url: 'https://api.twitter.com/2/tweets',
+    method: 'POST',
+    data: {
+      status: postContent,
+    },
+  };
     // Define the OAuth access token
     const token = {
       key: process.env.TWITTER_ACCESS_TOKEN_KEY,
