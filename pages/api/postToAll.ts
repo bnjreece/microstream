@@ -76,10 +76,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   //    return res.status(500).json({ error: 'Error posting to Threads', details: threadsError });
  //   }
 
-    // Post to Twitter
-const oauth_consumer_key = process.env.TWITTER_CONSUMER_KEY;
-const oauth_token = process.env.TWITTER_ACCESS_TOKEN;
-const oauth_signature_method = process.env.TWITTER_SIGNATURE_METHOD;
+// Post to Twitter
+const oauth_consumer_key = process.env.TWITTER_OAUTH_CONSUMER_KEY;
+const oauth_token = process.env.TWITTER_OAUTH_TOKEN;
+const oauth_signature_method = process.env.TWITTER_OAUTH_SIGNATURE_METHOD;
 const oauth_timestamp = Math.round(Date.now() / 1000);
 const oauth_nonce = crypto.randomBytes(32).toString('base64');
 const oauth_version = process.env.TWITTER_OAUTH_VERSION;
@@ -94,7 +94,6 @@ const token_secret = process.env.TWITTER_TOKEN_SECRET;
 if (!consumer_secret || !token_secret) {
   throw new Error('Twitter secret environment variables are not set');
 }
-
 const method = 'POST';
 const baseURL = 'https://api.twitter.com/2/tweets';
 
