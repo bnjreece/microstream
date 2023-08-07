@@ -94,7 +94,7 @@ try {
   const requestData = {
     url: 'https://api.twitter.com/2/tweets',
     method: 'POST',
-    data: { status: postContent },
+    data: { text: postContent },
   };
 
   // Define the OAuth access token
