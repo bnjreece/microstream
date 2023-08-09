@@ -34,12 +34,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         copyright: 'Copyright © 2023 bnjmn.org'
       });
 
-    // Helper function to convert plain text links to HTML
-    const convertPlainTextLinksToHTML = (content: string): string => {
-      const urlRegex = /https?:\/\/[^\s]+/g;
-      return content.replace(urlRegex, url => `<a href="${url}">${url}</a>`);
-    }
-      
+   // Helper function to convert plain text links to HTML
+const convertPlainTextLinksToHTML = (content: string): string => {
+  const urlRegex = /(https?:\/\/[^\s]+)(\.)?/g;
+  return content.replace(urlRegex, (match, url, period) => {
+      // If a period was captured, append it outside the link, else just return the link.
+      return `<a href="${url}">${url}</a>${period || ''}`;
+  });
+};
     // Add posts to the RSS feed
     posts.forEach((post) => {
       const contentWithLinks = convertPlainTextLinksToHTML(post.content);
