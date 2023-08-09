@@ -30,16 +30,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         title: 'bnji-stream',
         description: 'a stream-of-thought via microstream api',
         link: 'https://bnji.org/api/rss',
-        id: 'https://bnji.org/',  // This should be your site's base URL
-        copyright: 'Copyright © 2023 bnjmn.org'  // Replace with the current year and your website name
+        id: 'https://bnji.org/',
+        copyright: 'Copyright © 2023 bnjmn.org'
       });
+
+    // Helper function to convert plain text links to HTML
+    const convertPlainTextLinksToHTML = (content: string): string => {
+      const urlRegex = /https?:\/\/[^\s]+/g;
+      return content.replace(urlRegex, url => `<a href="${url}">${url}</a>`);
+    }
       
     // Add posts to the RSS feed
     posts.forEach((post) => {
+      const contentWithLinks = convertPlainTextLinksToHTML(post.content);
+
       feed.addItem({
         title: post.content,
         link: `https://bnji.org/posts/${post.id}`,
-        description: post.content,
+        description: contentWithLinks,  // Using the converted content here
         date: new Date(post.created_at),
       });
     });
