@@ -43,18 +43,17 @@ const convertPlainTextLinksToHTML = (content: string): string => {
   });
 };
 
-    // Add posts to the RSS feed
-    posts.forEach((post) => {
-      const contentWithLinks = convertPlainTextLinksToHTML(post.content);
+// Add posts to the RSS feed
+posts.forEach((post) => {
+  const contentWithLinks = convertPlainTextLinksToHTML(post.content);
 
-      feed.addItem({
-        title: post.content,
-        link: `https://bnji.org/posts/${post.id}`,
-        description: contentWithLinks,  // Using the converted content here
-        date: new Date(post.created_at),
-      });
-    });
-
+  feed.addItem({
+    title: post.content.replace(/\.+$/, ''),  // Removes any trailing periods
+    link: `https://bnji.org/posts/${post.id}`,
+    description: contentWithLinks,
+    date: new Date(post.created_at),
+  });
+});
     // Return the RSS feed as the response
     res.setHeader('Content-Type', 'application/rss+xml');
     res.status(200).send(feed.rss2());
