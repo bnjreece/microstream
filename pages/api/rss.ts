@@ -38,7 +38,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 const convertPlainTextLinksToHTML = (content: string): string => {
   const urlRegex = /(https?:\/\/[^\s]+)(\.)?/g;
   return content.replace(urlRegex, (match, url, period) => {
-      return `<a href="${url}">${url.replace(/\.$/, '')}</a>${period || ''}`;
+      const cleanUrl = url.replace(/\.$/, ''); // Removes trailing period
+      return `<a href="${cleanUrl}">${cleanUrl}</a>${period || ''}`;
   });
 };
 
