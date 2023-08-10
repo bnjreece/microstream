@@ -81,12 +81,7 @@ async function postToThreads(postContent: string) {
   const threadsAPI = new ThreadsAPI({
     username: threadsUsername,
     password: threadsPassword,
-    device: {
-      manufacturer: 'Apple',
-      model: 'MacBookPro18,4',
-      os_version: 14.0,
-      os_release: 'macOS',
-    },
+   
   });
 
   await threadsAPI.publish({ text: postContent });
